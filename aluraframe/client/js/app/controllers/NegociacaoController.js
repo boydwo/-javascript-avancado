@@ -11,13 +11,15 @@ class NegociacaoController {
 
     event.preventDefault();
 
+    let data = DateHelper.textoParaData(this._inputData.value);
+
     let negociacao = new Negociacao(
-      this._inputData.value,
+      data,
       this._inputQuantidade.value,
       this._inputValor.value
     );
 
-    console.log(negociacao);
+    console.log(negociacao)
 
   }
 }
