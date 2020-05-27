@@ -7,6 +7,7 @@ class ListaNegociacoes {
     this._negociacoes.push(negociacao);
   }
   get negociacoes() {
-    return this._negociacoes;
+    // cria um copia da Lista (programacao defensiva)
+    return [].concat(this._negociacoes);
   }
 }
