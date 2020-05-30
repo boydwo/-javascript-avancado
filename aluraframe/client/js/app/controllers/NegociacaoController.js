@@ -7,9 +7,11 @@ class NegociacaoController {
     this._inputQuantidade = $('#quantidade');
     this._inputValor = $('#valor');
 
-    this._listaNegociacoes = new ListaNegociacoes((model) => { // this de arrow function é lexico. Se mantem nas chamadas.
-      this._negociacoesView.update(model);
-    });
+    // this._listaNegociacoes = new ListaNegociacoes((model) => { // this de arrow function é lexico. Se mantem nas chamadas.
+    //   this._negociacoesView.update(model);
+    // });
+
+
 
     this._negociacoesView = new NegociacoesView($('#negociacoesView'));
     this._negociacoesView.update(this._listaNegociacoes); //primeira renderizaçao da lista
