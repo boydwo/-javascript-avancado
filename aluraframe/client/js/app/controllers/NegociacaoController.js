@@ -1,23 +1,20 @@
 class NegociacaoController {
 
   constructor() {
-
     let $ = document.querySelector.bind(document);
     this._inputData = $('#data');
     this._inputQuantidade = $('#quantidade');
     this._inputValor = $('#valor');
 
-    this._negociacoesView = new NegociacoesView($('#negociacoesView'));
     this._listaNegociacoes = new Bind(
       new ListaNegociacoes(),
-      this._negociacoesView,
-      ['adiciona', 'esvazia']);
+      new NegociacoesView($('#negociacoesView')),
+      'adiciona', 'esvazia');
 
-    this._mensagemView = new MensagemView($('#mensagemView'));
     this._mensagem = new Bind(
       new Mensagem(),
-      this._mensagemView,
-      ['texto']);
+      new MensagemView($('#mensagemView')),
+      'texto');
 
     ProxyFactory.create(new Mensagem(), ['texto'], (model) => this._mensagemView.update(model));
     this._mensagemView.update(this._mensagem);
