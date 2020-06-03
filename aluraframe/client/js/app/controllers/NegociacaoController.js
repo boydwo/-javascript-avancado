@@ -16,8 +16,6 @@ class NegociacaoController {
       new MensagemView($('#mensagemView')),
       'texto');
 
-    ProxyFactory.create(new Mensagem(), ['texto'], (model) => this._mensagemView.update(model));
-    this._mensagemView.update(this._mensagem);
   }
   adiciona(event) {
 
@@ -28,6 +26,25 @@ class NegociacaoController {
     this._mensagem.texto = 'Negociacao adicionada com sucesso';
 
     this._limpaFormulario();
+  }
+
+  importaNegociacoes() {
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'negociacoes/semana');
+    xhr.onreadystatechange = () => { // estado esperado noa ajax 4 (requisição concluida e resposta pronta);
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+
+        } else {
+          console.log('Não foi possivel obter as negociaçoes')
+        }
+      }
+
+    };
+    xhr.send();
+
   }
 
   apaga() {
