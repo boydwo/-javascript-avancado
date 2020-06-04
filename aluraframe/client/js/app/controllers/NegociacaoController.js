@@ -36,7 +36,7 @@ class NegociacaoController {
     xhr.onreadystatechange = () => { // estado esperado noa ajax 4 (requisição concluida e resposta pronta);
       if (xhr.readyState == 4) {
         if (xhr.status == 200) {
-
+          console.log('Obtendo as negociações do servidor')
         } else {
           console.log('Não foi possivel obter as negociaçoes')
         }
