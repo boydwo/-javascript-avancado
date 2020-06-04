@@ -2,6 +2,7 @@ class NegociacaoController {
 
   constructor() {
     let $ = document.querySelector.bind(document);
+
     this._inputData = $('#data');
     this._inputQuantidade = $('#quantidade');
     this._inputValor = $('#valor');
@@ -29,21 +30,17 @@ class NegociacaoController {
   }
 
   importaNegociacoes() {
+    let sercive = new NegociacaoService();
 
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'negociacoes/semana');
-    xhr.onreadystatechange = () => { // estado esperado noa ajax 4 (requisição concluida e resposta pronta);
-      if (xhr.readyState == 4) {
-        if (xhr.status == 200) {
-          console.log('Obtendo as negociações do servidor')
-        } else {
-          console.log('Não foi possivel obter as negociaçoes')
-        }
+    sercive.obterNegociacoesDaSeman((err, negociacoes) => { // error first
+      if (err) {
+        this._mensagem.texto = err;
+        return;
       }
 
-    };
-    xhr.send();
+      negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
+      this._mensagem.texto = 'Negociações importadas com sucesso';
+    });
 
   }
 
