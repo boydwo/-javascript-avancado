@@ -30,35 +30,45 @@ class NegociacaoController {
   }
 
   importaNegociacoes() {
-    let sercive = new NegociacaoService();
+    let service = new NegociacaoService();
 
-    sercive.obterNegociacoesDaSeman((err, negociacoes) => { // error first
-      if (err) {
-        this._mensagem.texto = err;
-        return;
-      }
+    // let promise = service.obterNegociacoesDaSemana(); // promisse: resultado futuro de uma operação
+    service.obterNegociacoesDaSemana()
+      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+      })
+      .catch((err) => this._mensagem.texto = err);
 
-      negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
+    service.obterNegociacoesDaSemanaAnterior()
+      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+      })
+      .catch((err) => this._mensagem.texto = err);
 
-      sercive.obterNegociacoesDaSemanaAnterior((err, negociacoes) => { // error first
-        if (err) {
-          this._mensagem.texto = err;
-          return;
-        }
+    service.obterNegociacoesDaSemanaRetrasada()
+      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+      })
+      .catch((err) => this._mensagem.texto = err);
 
-        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
 
-        sercive.obterNegociacoesDaSemanaRetrasada((err, negociacoes) => { // error first
-          if (err) {
-            this._mensagem.texto = err;
-            return;
-          }
 
-          negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
-          this._mensagem.texto = 'Negociações importadas com sucesso';
-        });
-      });
-    });
+
+
+
+
+    //  USANDO ESTRUTURA DE CALLBACK
+    // sercive.obterNegociacoesDaSeman((err, negociacoes) => { // error first
+    //   if (err) {
+    //     this._mensagem.texto = err;
+    //     return;
+    //   }
+
+    //   negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
+
   }
 
   apaga() {
