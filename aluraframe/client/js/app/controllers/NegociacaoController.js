@@ -39,9 +39,26 @@ class NegociacaoController {
       }
 
       negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
-      this._mensagem.texto = 'Negociações importadas com sucesso';
-    });
 
+      sercive.obterNegociacoesDaSemanaAnterior((err, negociacoes) => { // error first
+        if (err) {
+          this._mensagem.texto = err;
+          return;
+        }
+
+        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
+
+        sercive.obterNegociacoesDaSemanaRetrasada((err, negociacoes) => { // error first
+          if (err) {
+            this._mensagem.texto = err;
+            return;
+          }
+
+          negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao));
+          this._mensagem.texto = 'Negociações importadas com sucesso';
+        });
+      });
+    });
   }
 
   apaga() {
