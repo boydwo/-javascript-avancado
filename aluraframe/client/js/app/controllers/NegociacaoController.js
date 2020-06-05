@@ -32,32 +32,42 @@ class NegociacaoController {
   importaNegociacoes() {
     let service = new NegociacaoService();
 
-    // let promise = service.obterNegociacoesDaSemana(); // promisse: resultado futuro de uma operação
-    service.obterNegociacoesDaSemana()
-      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
-        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
-        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
-      })
-      .catch((err) => this._mensagem.texto = err);
-
-    service.obterNegociacoesDaSemanaAnterior()
-      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
-        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
-        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
-      })
-      .catch((err) => this._mensagem.texto = err);
-
-    service.obterNegociacoesDaSemanaRetrasada()
-      .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
-        negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
-        this._mensagem.texto = 'Negociações da semana obtida com sucesso';
-      })
+    // resolve a promesa em ordem.
+    Promise.all(
+      [service.obterNegociacoesDaSemana(),
+      service.obterNegociacoesDaSemanaAnterior(),
+      service.obterNegociacoesDaSemanaRetrasada()]
+    ).then((negociacoes) => {
+      negociacoes
+        .reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])
+        .forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+      this._mensagem.texto = 'Negociações importadas com sucesoo';
+    })
       .catch((err) => this._mensagem.texto = err);
 
 
+    //  USANDO ESTRUTURA DE PREOMISSE UNITARIA
+    // // let promise = service.obterNegociacoesDaSemana(); // promisse: resultado futuro de uma operação
+    // service.obterNegociacoesDaSemana()
+    //   .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+    //     negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+    //     this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+    //   })
+    //   .catch((err) => this._mensagem.texto = err);
 
+    // service.obterNegociacoesDaSemanaAnterior()
+    //   .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+    //     negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+    //     this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+    //   })
+    //   .catch((err) => this._mensagem.texto = err);
 
-
+    // service.obterNegociacoesDaSemanaRetrasada()
+    //   .then((negociacoes) => { // oq esta no resolve eu pego no Then e o que esta no reject eu pego no catch
+    //     negociacoes.forEach(negocicao => this._listaNegociacoes.adiciona(negocicao))
+    //     this._mensagem.texto = 'Negociações da semana obtida com sucesso';
+    //   })
+    //   .catch((err) => this._mensagem.texto = err);
 
 
     //  USANDO ESTRUTURA DE CALLBACK
